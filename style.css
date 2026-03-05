@@ -1,0 +1,1124 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Lexend+Deca:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Gothic&family=Open+Sans:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Archivo+Black&family=League+Gothic&family=Lexend+Deca:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Archivo+Black&family=League+Gothic&family=League+Spartan:wght@100..900&family=Lexend+Deca:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+html{
+  scroll-behavior: smooth;
+}
+body{
+  overflow-x: hidden;
+}
+
+/* =====================================================
+   INTRO SECTION
+===================================================== */
+
+#intro {
+  position: fixed;
+  inset: 0;
+  background: #1d1f21;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  font-family: 'Open Sans', sans-serif;
+  transition: background 1s ease, transform 1s ease;
+}
+
+#intro.dark {
+  background:#1d1f21;
+}
+
+#intro.hide {
+  transform: translateY(-100%);
+}
+
+#hello-text {
+  font-size: 3rem;
+  opacity: 0;
+  transition:    
+    opacity 0.3s ease,
+    transform 0.6s ease,
+    color 0.8s ease;
+  color: white;
+}
+#hello-text.zoom {
+  transform: scale(8);
+}
+
+#hello-text.show {
+  opacity:1;
+}
+
+/* =====================================================
+   HOME SECTION
+===================================================== */
+
+#home {
+  position: relative; /* change from fixed */
+  height: 100vh;      /* full screen height */
+  transform: translateY(100%);
+  transition: transform 1s ease;
+}
+
+#home.show {
+  transform: translateY(0);
+}
+
+/* FINAL COLOR SWAP */
+#intro.swap {
+  background: #1d1f21;
+}
+
+#intro.swap #hello-text {
+  color: #cac7c3;
+}
+
+/* INVERT EFFECT */
+#intro.invert {
+  background: #cac7c3;
+}
+
+#intro.invert #hello-text {
+  color: #1d1f21;
+}
+
+/* ZOOM EFFECT */
+#hello-text.zoom {
+  transform: scale(8);
+  transition: transform 1.2s ease-in-out;
+}
+#hello-text {
+  font-size: 3rem;
+  opacity: 0;
+  transition: 
+    opacity 0.6s ease,
+    transform 1.2s ease,
+    color 0.8s ease;
+}
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+.home-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.home-top {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 0;
+  background: #cac7c3;
+  transition: height 1.2s ease;
+  transition-delay: 1s;
+}
+
+.home-bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  background: #1d1f21;
+  transition: height 1.2s ease;
+  transition-delay: 1.15s;
+}
+
+#home.show .home-top {
+  height: 75%;
+}
+
+#home.show .home-bottom {
+  height: 25%;
+}
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+header {
+  position: relative;
+  z-index: 4;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: 2.3s;
+}
+
+#home.show header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  padding: 1.4rem;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.nav-links a,
+.about-toggle {
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: black;
+  position: relative;
+}
+
+/* Underline animation */
+.nav-links a::after,
+.about-toggle::after {
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-4px;
+  width:0%;
+  height:2px;
+  background:currentColor;
+  transition:width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.about-toggle:hover::after,
+.nav-links a.active::after {
+  width:100%;
+}
+
+/* =====================================================
+   ABOUT DROPDOWN
+===================================================== */
+
+.about-item {
+  position: relative;
+}
+
+.about-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Dropdown box */
+.about-submenu {
+  position: absolute;
+  top: 130%;
+  left: 0;
+  list-style: none;
+  background: white;
+  border-radius: 8px;
+  padding: 8px 0;
+  width: 170px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.about-submenu li {
+  padding: 8px 14px;
+}
+
+.about-submenu li a {
+  text-decoration: none;
+  color: black;
+  font-size: 0.9rem;
+}
+
+.about-submenu li:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+/* Show dropdown */
+.about-item.active .about-submenu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Arrow rotation */
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.about-item.active .arrow {
+  transform: rotate(90deg);
+}
+
+/* =====================================================
+   MARQUEE
+===================================================== */
+
+.marquee {
+  margin-top: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.marquee-track {
+  display: flex;
+  width: fit-content;
+  animation: scroll 40s linear infinite;
+}
+
+.marquee-track p {
+  font-family: 'League Gothic', sans-serif;
+  font-size: 300px;
+  letter-spacing: 60px;
+  white-space: nowrap;
+  color: white;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* =====================================================
+   PROFILE IMAGE
+===================================================== */
+
+.profile-wrapper {
+  position: absolute;
+  bottom: 0;
+  left:400px;
+  top: -150px;
+  transform: translateX(-50%);
+  z-index: 2;
+
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  transition-delay: 2.5s;
+}
+
+#home.show .profile-wrapper {
+  opacity: 1;
+}
+
+.profile-img {
+  height: 950px;
+  object-fit: contain;
+}
+
+/* =====================================================
+   HOME TEXT + TYPING
+===================================================== */
+
+.home-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+#typing::after {
+  content: "|";
+  margin-left: 5px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
+.text-top {
+  position: relative;
+  top: 80px; /* move up */
+  left: 360px;  /* move right */
+  font-family: 'Architects Daughter';
+}
+
+.text-typing {
+  position: relative;
+  top: 70px;
+  left: 360px;
+  font-family: 'Architects Daughter';
+  font-size: 3rem;
+}
+.text-bottom {
+  position: relative;
+  top: 50px;
+  letter-spacing: 2px;
+  font-family: 'Architects Daughter';
+  left: 360px;
+}
+/*=================HOME NAME TEXT========================*/
+.name-text,
+.name,
+.home{
+  position: relative;
+  color: white;
+  left: 28%;
+  font-size: 4rem;
+  font-family: 'Archivo black';
+}
+
+
+/* =====================================================
+   HOME TEXT APPEAR AFTER BACKGROUND ANIMATION
+===================================================== */
+
+.home-text h2,
+.home-text h1 {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Delay so it appears AFTER the background fills */
+
+#home.show .text-top {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 2.4s;
+}
+
+#home.show .text-typing {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 2.55s;
+}
+
+#home.show .text-bottom {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 2.7s;
+}
+
+
+/* ================= SECTION ABOUT ME ================= */
+
+#about-test {
+  position: relative;
+  height: 100vh;
+  background: #1d1f21; /* starting color */
+  overflow: hidden;
+
+  transition: background 1s ease;
+}
+
+/* ================= IMAGE CONTAINER ================= */
+
+.image-container {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  transition:
+    height 1.5s ease,
+    top 1.5s ease,
+    transform 1.5s ease;
+}
+#about-test.move-down .image-container {
+  transition:
+    top 0.6s ease,
+    transform 0.6s ease;
+}
+
+/*  — CROP + CENTER */
+#about-test.narrow .image-container {
+  height: 200px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/*  — SLIDE UP */
+#about-test.slide-up .image-container {
+  top: 0;
+  transform: translateY(0);
+}
+
+/* — MOVE DOWN */
+#about-test.move-down {
+  background: #33415c; /* background color appears */
+}
+
+#about-test.move-down .image-container {
+  top: 60%;              /* adjust how low  */
+  transform: translateY(15%);
+}
+
+/* ================= IMAGE ================= */
+
+.fallen-full {
+  width: 100%;
+  height: 100%;
+
+  background-image: url("images/Fallen.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 20%;
+}
+
+/* ================= TITLE ================= */
+
+.about-title {
+  position: absolute;
+  left: 50%;
+
+  letter-spacing: 10px;
+  transition: opacity 1s ease, transform 1s ease;
+
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 354px;
+  font-family: 'League Gothic', sans-serif;
+  text-align: center;
+  transform: translateY(-50px, -50px);
+  white-space: nowrap; 
+  top: 5%;
+  opacity: 0;
+}
+
+#about-test.move-down .about-title {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+/*ABout text*/
+.about-text {
+  position: absolute;
+  top: 72%;          /* adjust depending on where image ends */
+  left: 73%;
+  transform: translate(-50%, 30px);
+
+  width: 90%;
+  max-width: 500px;
+
+  color: #1d1f21;
+  font-size: 1rem;
+  text-align: justify;
+  line-height: 1.6;
+
+  opacity: 0;
+
+  transition: opacity 1s ease, transform 1s ease;
+  font-family: 'open sans';
+  justify-content: center;
+  font-weight: 600;
+  border: #1d1f21 solid;
+  padding: 1rem;
+}
+
+#about-test.move-down .about-text {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/*================ ACHIEVEMENTS SECTION ======================*/
+
+#Achievements {
+  position: relative;
+  height: 100vh;
+  background-color: #1d1f21;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== TYPING WORD ===== */
+
+.ach-typing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 120px;
+  font-family: 'League Gothic', sans-serif;
+  color: rgba(255,255,255,0.3);
+  opacity: 0;
+  transition: all 1s ease;
+  z-index: 5;
+}
+
+/* Move word to right side */
+.ach-typing.move-right {
+  left: auto;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* ===== CENTERED GALLERY CONTAINER ===== */
+
+.ach-top-scroll {
+  position: relative;
+  width: 90%;              /* ADJUST WIDTH HERE */
+  height: 90vh;            /* ADJUST HEIGHT HERE */
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* Show gallery */
+.ach-show-gallery .ach-top-scroll {
+  opacity: 1;
+}
+
+/* ===== TRACK ===== */
+.ach-track {
+  display: flex;
+  width: max-content;
+}
+
+/* ===== IMAGES ===== */
+
+.ach-img {
+  max-height: 60vh;     /* ADJUST IMAGE SIZE HERE */
+  border-radius: 40px;
+  object-fit: contain;  /* NO CROPPING */
+  display: flex;
+  gap: 40px;
+  width: max-content;
+}
+
+/* ===== FADE BOUNDARY EFFECT ===== */
+
+.ach-top-scroll::before,
+.ach-top-scroll::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ach-top-scroll::before {
+  left: 0;
+  background: linear-gradient(to right, #1d1f21, transparent);
+  width: 20px;
+}
+
+.ach-top-scroll::after {
+  right: 0;
+  background: linear-gradient(to left, #1d1f21, transparent);
+
+}
+/* Wrapper */
+.ach-img-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.ach-img-wrapper .ach-img {
+  height: 60vh;
+  border-radius: 40px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.ach-img-wrapper:hover .ach-img {
+  transform: scale(1.05);
+}
+
+.ach-hover-text {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 15px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-align: center;
+  max-width: 90%;
+  z-index: 10; /* ensure it's above images */
+  font-family: 'open sans';
+}
+
+.ach-img-wrapper:hover .ach-hover-text {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
+  pointer-events: auto;
+}
+/* ================= INTERESTS SECTION ================= */
+
+#interests{
+  position: relative;
+  height: 100vh;
+  background: #1d1f21;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BIG TITLE */
+
+.interest-title{
+  position: absolute;
+  bottom: -100%; /* start off screen */
+
+  font-family: 'League Gothic', sans-serif;
+  font-size: 25vw; /* huge responsive text */
+  letter-spacing: 20px;
+
+  color: rgba(255,255,255,0.15);
+
+  opacity: 0;
+
+  transform: translateY(200px);
+  transition: 
+    transform 1.2s cubic-bezier(.19,1,.22,1),
+    opacity 1s ease;
+  z-index: 10;
+}
+
+/* animation state */
+
+#interests.show-interest .interest-title{
+  bottom: 50%;
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+#interests.show .interest-title{
+  bottom: 0;
+  opacity: 1;
+  transform: translateY(0);
+}
+#interests.shrink .interest-title{
+  transform: translateY(-75%) scale(0.6);
+}
+/* INTEREST IMAGE LAYOUT */
+
+/* HIDE IMAGES AT FIRST */
+
+.interest-container{
+  position: absolute;
+  width: 80%;
+  height: 80%;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+/* SHOW IMAGES AFTER TITLE */
+
+#interests.show .interest-container{
+  opacity: 1;
+  transform: translateY(0);
+}
+/* COLUMN */
+
+.interest-column{
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* IMAGE STYLE */
+
+
+/* ===== INFINITE SCROLL ===== */
+
+/* DOWNWARD MOVEMENT */
+
+.scroll-down{
+  animation: scrollDown 20s linear infinite;
+}
+
+/* UPWARD MOVEMENT */
+
+.scroll-up{
+  animation: scrollUp 20s linear infinite;
+}
+
+/* KEYFRAMES */
+
+@keyframes scrollDown{
+  0%{
+    transform: translateY(-50%);
+  }
+
+  100%{
+    transform: translateY(0%);
+  }
+}
+
+@keyframes scrollUp{
+  0%{
+    transform: translateY(0%);
+  }
+
+  100%{
+    transform: translateY(-50%);
+  }
+}
+/* FADE MASK */
+
+#interests::before,
+#interests::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#interests::before{
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    #1d1f21 0%,
+    #1d1f21 60%,
+    rgba(29,31,33,0) 100%
+  );
+
+}
+#Education{
+  height: 100vh;
+  background: #1d1f21;
+}
+
+/* INTEREST ITEM */
+
+/* INTEREST ITEM */
+
+.interest-item{
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 10px;
+    flex-shrink: 0;
+}
+
+/* MAIN IMAGE */
+
+.interest-item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+/* BLUR ONLY THE BACK IMAGE */
+
+.interest-item:hover img:not(.interest-overlay){
+  filter: blur(5px);
+  transform: scale(1.05);
+}
+
+/* CENTER ICON */
+
+.interest-overlay{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* SHOW ICON */
+
+.interest-item:hover .interest-overlay{
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+/* CENTER TEXT */
+
+.interest-text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+
+  color: white;
+  font-family: 'League Gothic', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 4px;
+
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+/* SHOW TEXT ON HOVER */
+
+.interest-item:hover .interest-text{
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* BLUR BACKGROUND IMAGE */
+
+.interest-item:hover img{
+  filter: blur(5px);
+  transform: scale(1.05);
+}
+
+/*==========================EDUCATION SECTION=========================*/
+
+
+.education{
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background:#111;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+}
+
+.edu-wrapper{
+  width:100%;
+  position:relative;
+  font-family: 'league gothic';
+}
+
+/* each diagonal row */
+
+.edu-row{
+  width:200%;
+  white-space:nowrap;
+  position:absolute;
+  left:-100%;
+}
+
+/* positions */
+
+.row1{
+  top:-80px;
+  transform:rotate(-67deg);
+}
+
+.row2{
+  top:450px;
+  transform:rotate(-67deg);
+}
+
+.row3{
+  top:980px;
+  transform:rotate(-67deg);
+}
+
+/* moving track */
+
+.edu-track{
+  display:inline-block;
+  animation: scrollEdu 60s linear infinite;
+}
+
+.row2 .edu-track{
+  animation-duration: 160s;     /* slower */
+  animation-direction: reverse;
+}
+
+/* text */
+
+.edu-track span{
+  font-size:240px;
+  font-weight:800;
+  letter-spacing:10px;
+  color:rgba(255,255,255,0.08);
+}
+
+/* animation */
+
+@keyframes scrollEdu{
+  from{
+    transform:translateX(0);
+  }
+  to{
+    transform:translateX(-50%);
+  }
+}
+
+
+/* =============================
+   SIDE SLIDESHOW
+============================= */
+
+.edu-side{
+  position:absolute;
+  right:80px;
+  top:50%;
+  transform:translateY(-50%);
+  display:flex;
+  align-items:center;
+  gap:20px;
+  z-index:5;
+}
+
+.edu-btn{
+  background:rgba(255,255,255,0.1);
+  border:none;
+  color:white;
+  font-size:28px;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.edu-btn:hover{
+  background:white;
+  color:black;
+}
+
+.id-container{
+  width:280px;
+}
+
+.id-photo{
+  width:100%;
+  border-radius:12px;
+  object-fit:cover;
+}
+.edu-image-wrapper{
+  position:relative;
+}
+
+/* hidden textbox */
+
+.edu-hover-box{
+  position:absolute;
+  bottom:-90px;
+  left:0;
+
+  width:100%;
+  background:#000;
+  color:white;
+
+  padding:15px;
+  border-radius:10px;
+
+  opacity:0;
+  transform:translateY(10px);
+
+  transition:all 0.3s ease;
+  font-family: 'open sans';
+}
+
+/* show when hovering image */
+
+.edu-image-wrapper:hover .edu-hover-box{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/*=====================GOALS===========================*/
+.goals{
+    height:100vh;
+    background:linear-gradient(135deg,#0f1115,#1c1f26);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* GOALS text */
+
+.goals-title{
+    position:absolute;
+    top:50px;
+    left:180px;
+    font-size:110px;
+    color:rgba(255,255,255,0.5);
+    font-family: 'league spartan';
+}
+
+/* cards */
+
+.cards{
+    display:flex;
+    gap:80px;
+}
+
+.card{
+    width:230px;
+    height:320px;
+    background:#c9c6c2;
+    border-radius:25px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:30px;
+    font-size: 20px;
+    font-family: '';
+
+}
+
+/* background texts */
+
+.two{
+    position:absolute;
+    top:70px;
+    font-size:70px;
+    color:rgba(255,255,255,0.25);
+        font-family: 'league spartan';
+}
+
+.one{
+    position:absolute;
+    bottom:70px;
+    left:235px;
+    transform:rotate(180deg);
+    font-size:70px;
+    color:rgba(255,255,255,0.25);
+        font-family: 'league spartan';
+}
+
+.three{
+    position:absolute;
+    right:40px;
+    top:50%;
+    transform:translateY(-50%) rotate(90deg);
+    font-size:90px;
+    color:rgba(255,255,255,0.25);
+        font-family: 'league spartan';
+}
