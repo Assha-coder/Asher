@@ -337,25 +337,32 @@ function startInfiniteGallery() {
 ============================= */
 
 const interestSection = document.querySelector("#interests");
+let interestStarted = false;
 
 if(interestSection){
 
   const interestObserver = new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
-      if(entry.isIntersecting){
+      if(entry.isIntersecting && !interestStarted){
+        interestStarted = true;
 
+        // Step 1: title fades in big + centered
         setTimeout(()=>{
           interestSection.classList.add("show");
-          setTimeout(()=>{
-            
-    interestSection.classList.add("shrink");
-    
-  },1300); 
-        },500); // delay so first frame is empty
+        }, 300);
 
+        // Step 2: title shrinks to top
+        setTimeout(()=>{
+          interestSection.classList.add("shrink");
+        }, 1400);
+
+        // Step 3: images reveal AFTER title has settled
+        setTimeout(()=>{
+          interestSection.classList.add("images-show");
+        }, 2500);
       }
     });
-  },{threshold:0.6});
+  },{threshold:0.4});
 
   interestObserver.observe(interestSection);
 }
@@ -389,27 +396,25 @@ function startInterestSlider(){
 
 const card = document.querySelector(".id-card");
 
-card.addEventListener("mousemove", (e) => {
+if(card){
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 14;
+    const rotateY = (centerX - x) / 14;
+    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    card.style.boxShadow = `${-rotateY*2}px ${rotateX*2}px 50px rgba(0,0,0,0.4)`;
+  });
 
-  const rect = card.getBoundingClientRect();
+  card.addEventListener("mouseleave", () => {
+    card.style.transform = "perspective(800px) rotateX(0) rotateY(0)";
+    card.style.boxShadow = "";
+  });
+}
 
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-
-  const rotateX = (y - centerY) / 10;
-  const rotateY = (centerX - x) / 10;
-
-  card.style.transform =
-    `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-
-});
-
-card.addEventListener("mouseleave", () => {
-  card.style.transform = "rotateX(0) rotateY(0)";
-});
 // =============================
 // EDUCATION SLIDESHOW
 // =============================
@@ -423,81 +428,194 @@ desc:"My early childhood education."
 {
 img:"images/education/fullbright.jpg",
 title:"Fullbright Science Elementary School",
-desc:"My elementary school years (Grade 1-2) ."
+desc:"My elementary school years (Grade 1-2)."
 },
 {
-img:"images/education/pitogo.jpg",
+img:"images/education/pitogo.jfif",
 title:"Pitogo Elementary School",
-desc:"Part of my academic journey (Grade 3-4)"
+desc:"Part of my academic journey (Grade 3-4)."
 },
 {
 img:"images/education/puguis.jpg",
-title:"Puguis Elementary SChool",
-desc:"Where I continued my studies (Grade 5-6)"
+title:"Puguis Elementary School",
+desc:"Where I continued my studies (Grade 5-6)."
 },
 {
 img:"images/education/wangal.jpg",
 title:"Benguet National High School",
-desc:"Another step in my education (Grade 7)"
+desc:"Another step in my education (Grade 7)."
 },
 {
 img:"images/education/bernardo.jpg",
 title:"Bernardo Lirio Memorial National High School",
-desc:"A later stage of my studies (Grade 8-10)"
+desc:"A later stage of my studies (Grade 8-10)."
 },
 {
 img:"images/education/fidelis.png",
-title:"Fidelis Senior High school",
-desc:"My most recent school (Grade 11)"
+title:"Fidelis Senior High School",
+desc:"My most recent school (Grade 11)."
 }
 ];
 
 let eduIndex = 0;
+let eduAnimating = false;
 
 const eduImage = document.getElementById("eduImage");
 const eduTitle = document.getElementById("eduTitle");
 const eduDesc = document.getElementById("eduDesc");
+const eduWrapper = document.querySelector(".edu-image-wrapper");
 
 const nextBtn = document.querySelector(".edu-btn.next");
 const prevBtn = document.querySelector(".edu-btn.prev");
 
-function showEduImage(){
+function showEduImage(direction = "next"){
+  if(!eduImage || !eduWrapper || eduAnimating) return;
+  eduAnimating = true;
 
-  const slide = eduSlides[eduIndex];
+  const outClass = direction === "next" ? "slide-out" : "slide-in-reverse";
+  eduWrapper.classList.add(outClass);
 
-  eduImage.src = slide.img;
-  if(eduTitle) eduTitle.textContent = slide.title;
-  if(eduDesc) eduDesc.textContent = slide.desc;
+  setTimeout(()=>{
+    const slide = eduSlides[eduIndex];
+    eduImage.src = slide.img;
+    if(eduTitle) eduTitle.textContent = slide.title;
+    if(eduDesc)  eduDesc.textContent  = slide.desc;
 
+    eduWrapper.classList.remove(outClass);
+    eduWrapper.classList.add("slide-in");
+
+    // force reflow
+    eduWrapper.offsetWidth;
+
+    setTimeout(()=>{
+      eduWrapper.classList.remove("slide-in");
+      eduAnimating = false;
+    }, 450);
+
+  }, 300);
 }
 
 if(nextBtn){
-nextBtn.addEventListener("click", ()=>{
-
-  eduIndex++;
-
-  if(eduIndex >= eduSlides.length){
-    eduIndex = 0;
-  }
-
-  showEduImage();
-
-});
+  nextBtn.addEventListener("click", ()=>{
+    eduIndex = (eduIndex + 1) % eduSlides.length;
+    showEduImage("next");
+  });
 }
 
 if(prevBtn){
-prevBtn.addEventListener("click", ()=>{
-
-  eduIndex--;
-
-  if(eduIndex < 0){
-    eduIndex = eduSlides.length - 1;
-  }
-
-  showEduImage();
-
-});
+  prevBtn.addEventListener("click", ()=>{
+    eduIndex = (eduIndex - 1 + eduSlides.length) % eduSlides.length;
+    showEduImage("prev");
+  });
 }
 
-// show first slide
-showEduImage();
+// show first slide (no animation on first load)
+(function initFirstSlide(){
+  if(!eduImage) return;
+  const s = eduSlides[0];
+  eduImage.src = s.img;
+  if(eduTitle) eduTitle.textContent = s.title;
+  if(eduDesc)  eduDesc.textContent  = s.desc;
+})();
+
+// =============================
+// EDUCATION SECTION ENTRANCE
+// =============================
+
+const eduSection = document.getElementById("Education");
+const eduRows   = document.querySelectorAll(".edu-row");
+let eduStarted  = false;
+
+if(eduSection){
+  const eduObserver = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting && !eduStarted){
+        eduStarted = true;
+
+        // show edu-side card
+        eduSection.classList.add("edu-show");
+
+        // stagger-sweep each row in
+        eduRows.forEach((row, i)=>{
+          setTimeout(()=>{
+            row.classList.add("edu-entered");
+
+            // after entrance animation ends → switch to infinite loop
+            const track = row.querySelector(".edu-track");
+            const enterDuration = (3 + i * 0.4) * 1000;
+            setTimeout(()=>{
+              if(track) track.classList.add("edu-loop");
+            }, enterDuration);
+
+          }, i * 200);
+        });
+      }
+    });
+  },{threshold:0.2});
+
+  eduObserver.observe(eduSection);
+}
+
+/* =============================
+   GOALS SECTION ANIMATION
+============================= */
+
+const goalsSection = document.querySelector(".goals");
+const goalsTitle = document.querySelector(".goals-title");
+let goalsStarted = false;
+
+if(goalsSection){
+  const goalsObserver = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting && !goalsStarted){
+        goalsStarted = true;
+        animateGoals();
+      }
+    });
+  },{threshold:0.3});
+
+  goalsObserver.observe(goalsSection);
+}
+
+function animateGoals(){
+
+  if(!goalsTitle) return;
+
+  goalsTitle.classList.add("title-appear");
+
+  setTimeout(()=>{
+    goalsTitle.classList.add("title-settle");
+  }, 600);
+
+  setTimeout(()=>{
+    goalsSection.classList.add("goals-show");
+  }, 700);
+
+}
+
+/* =============================
+   CONTACT SECTION ANIMATION
+============================= */
+
+const contactSection = document.getElementById("contact");
+let contactStarted = false;
+
+if(contactSection){
+  const contactObserver = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting && !contactStarted){
+        contactStarted = true;
+
+        // Phase 1: "REACH OUT." slams in
+        contactSection.classList.add("contact-show");
+
+        // Phase 2: after 1.4s → lines draw + boxes slide in
+        setTimeout(()=>{
+          contactSection.classList.add("contact-phase2");
+        }, 1400);
+      }
+    });
+  },{threshold:0.25});
+
+  contactObserver.observe(contactSection);
+}
